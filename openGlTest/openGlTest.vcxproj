@@ -91,6 +91,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\TR\Documents\Visual Studio 2017\Projects\openGlTest\openGlTest\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -135,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cube_3D.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="makeSquare.cpp" />
     <ClCompile Include="makeTriangle.cpp" />
@@ -145,6 +147,7 @@
     <ClCompile Include="源.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cube_3D.h" />
     <ClInclude Include="makeSquare.h" />
     <ClInclude Include="makeTriangle.h" />
     <ClInclude Include="makeWindow.h" />
