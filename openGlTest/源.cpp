@@ -6,6 +6,7 @@
 #include "makeSquare.h"
 #include <stdio.h>
 #include "pictureTest.h"
+#include "Cube_3D.h"
 using namespace std;
 
 
@@ -13,6 +14,7 @@ int main() {
 	//uiTest(); 第一个实验例子，生成一个窗口
 	//makeTriangle();//实验例子2
 	//makeSquare();
-	pictureTest();
+	//pictureTest();
+	Cube_3D();
 }
 
