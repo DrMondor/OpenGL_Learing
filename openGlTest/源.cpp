@@ -15,6 +15,6 @@ int main() {
 	//makeTriangle();//ÊµÑéÀı×Ó2
 	//makeSquare();
 	//pictureTest();
-	Cube_3D();
+	//Cube_3D();
 }
 

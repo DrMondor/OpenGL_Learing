@@ -9,12 +9,16 @@
 #include "Shader.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+void mouse_callback(GLFWwindow* window, double xPos, double yPos);
+float lastX = 400, lastY = 300;
 
-
+bool firstMouse = true;
+float yaw = 0.0f, pitch = 0.0f;
 // 设置
 const unsigned int SCR_WIDTH1 = 1280;
 const unsigned int SCR_HEIGHT1 = 720;
-
+float deltaTime = 0.0f;  //两帧之间的间隔时间
+float lastFrame = 0.0f;  //上一帧绘制的时间
 float factor1 = 0.2f;
 //
 //float vertices[] = {
@@ -86,6 +90,10 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(1.5f, 0.2f, -1.5f),
 	glm::vec3(-1.3f, 1.0f, -1.5f)
 };
+
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 4.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 int Cube_3D() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -100,6 +108,8 @@ int Cube_3D() {
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
@@ -146,7 +156,7 @@ int Cube_3D() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(/*"zhou_yu.bmp"*/"beauty.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load("beauty.jpg", &width, &height, &nrChannels, 0);
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -184,7 +194,7 @@ int Cube_3D() {
 	//变换
 	//glm::mat4 trans;
 	//trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-	//trans = glm::rotate(trans, /*glm::radians(90.0f)*/(float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+	//trans = glm::rotate(trans, （float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 	glm::mat4 view;
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -4.0f));
@@ -194,7 +204,7 @@ int Cube_3D() {
 
 
 	while (!glfwWindowShouldClose(window)) {
-		processInput(window);
+		processInput(window,deltaTime,cameraPos,cameraFront,cameraUp);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -203,19 +213,23 @@ int Cube_3D() {
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
-
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 		shader.use();
 
-		glm::mat4 model;
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		//glm::mat4 model;
+		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
-
+		glm::mat4 view;
+		//view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		//shader.setMat4("model", glm::value_ptr(model));
 		shader.setMat4("view", glm::value_ptr(view));
 		shader.setMat4("projection", glm::value_ptr(projection));
 
-		/*glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);*/
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(VAO);
 		for (int i = 0; i < 10; ++i) {
 			glm::mat4 model;
@@ -234,3 +248,40 @@ int Cube_3D() {
 	glfwTerminate();
 	return 0;
 }
+void mouse_callback(GLFWwindow* window, double xPos, double yPos) {
+
+	static int x = 0;
+	x++;
+	if (x == 10)
+		int y = 0;
+	if (firstMouse) {
+
+		lastX = xPos;
+		lastY = yPos;
+		firstMouse = false;
+	}
+	float xoffset = lastX - xPos;	//别忘了，在窗口中，左边的坐标小于右边的坐标，而我们需要一个正的角度
+	float yoffset = lastY - yPos;	//同样，在窗口中，下面的坐标大于上面的坐标，而我们往上抬头的时候需要一个正的角度
+	lastX = xPos;
+	lastY = yPos;
+
+	float sensitivity = 0.05f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = -sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = -cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+	cameraFront = glm::normalize(front);
+
+}
+
