@@ -177,11 +177,13 @@ int Cube_3D() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//加载图片
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data2 = stbi_load("12.png", &width, &height, &nrChannels, 0);
+	unsigned char* data2 = stbi_load("ass.jpg", &width, &height, &nrChannels, 0);
+
 	if (data2) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2); //设置断点后报错
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
+
 	else
 		std::cout << "无法加载问题，请检查代码或资源是否有误。" << std::endl;
 	stbi_image_free(data2);
