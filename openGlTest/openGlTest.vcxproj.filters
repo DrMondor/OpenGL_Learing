@@ -42,6 +42,9 @@
     <ClCompile Include="Cube_3D.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="simulateLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="uiTest.h">
@@ -66,6 +69,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Cube_3D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="simulateLight.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

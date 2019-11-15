@@ -143,6 +143,7 @@
     <ClCompile Include="makeWindow.cpp" />
     <ClCompile Include="pictureTest.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="simulateLight.cpp" />
     <ClCompile Include="uiTest.cpp" />
     <ClCompile Include="源.cpp" />
   </ItemGroup>
@@ -153,6 +154,7 @@
     <ClInclude Include="makeWindow.h" />
     <ClInclude Include="pictureTest.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="simulateLight.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="uiTest.h" />
   </ItemGroup>
