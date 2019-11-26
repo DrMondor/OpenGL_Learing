@@ -17,8 +17,11 @@
 
 class simulateLight
 {
+private:
+	double r;
 public:
-	const unsigned int SCR_WIDTH = 1280;
+
+	/*const unsigned int SCR_WIDTH = 1280;
 	const unsigned int SCR_HEIGHT = 720;
 	float factor;
 	float fov;
@@ -33,10 +36,8 @@ public:
 	//光照
 	glm::vec3 lightPos;
 
-	float vertices[];
-	simulateLight() {
-	}
-	~simulateLight();
+	float vertices[];*/
+	simulateLight(); //构造函数
 };
 
 #endif // ! SIMULATELIGHT_H_
