@@ -7,7 +7,7 @@
 #include <vector>
 enum  Camera_Movement
 {
-	FORWWARD,
+	FORWARD,
 	BACKWARD,
 	LEFT,
 	RIGHT
@@ -55,6 +55,50 @@ public:
 	glm::mat4 GetViewMartix() {
 		return glm::lookAt(Position, Position + Front, Up);
 	}
+	void ProcessKeyBoard(Camera_Movement direction, float deltaTime) {
+		float velocity = MovementSpeed * deltaTime;
+		if (direction == FORWARD) {
+			Position += Front * velocity;
+		}
+		if (direction == BACKWARD)
+		{
+			Position -= Front * velocity;
+		}
+		if (direction == LEFT)
+		{
+			Position -= Right * velocity;
+		}
+		if (direction == RIGHT)
+		{
+			Position += Right * velocity;
+		}
+	}
+	//鼠标输入处理
+	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true) {
+		xoffset *= MouseSensitivity;
+		yoffset *= MouseSensitivity;
+
+		Yaw += xoffset;
+		Pitch += yoffset;
+
+		if (constrainPitch) {
+			if (Pitch > 89.0f)
+				Pitch = 89.0f;
+			if (Pitch < -89.0f)
+				Pitch = -89.0f;
+		}
+
+		updateCameraVectors();
+	}
+
+	//变焦处理
+	void ProcessMouseScroll(float yoffset) {
+		if (Zoom >= 1.0f && Zoom <= 45.0f)
+			Zoom -= yoffset;
+		if (Zoom <= 1.0f)
+			Zoom = 1.0f;
+		if (Zoom >= 45.0f)
+
 	~Camera();
 
 private:
