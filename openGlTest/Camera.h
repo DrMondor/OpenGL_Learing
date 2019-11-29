@@ -1,6 +1,6 @@
 #ifndef  CAMERA_H_
 #define CAMERA_H_
-#include <glad\/glad.h>
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -100,7 +100,6 @@ public:
 		if (Zoom >= 45.0f)
 			Zoom = 45.0f;
 	}
-	~Camera();
 
 private:
 	void updateCameraVectors() {

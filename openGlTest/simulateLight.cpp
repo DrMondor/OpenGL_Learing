@@ -78,67 +78,6 @@ float vertices[] = {
 };
 simulateLight::simulateLight()
 {
-	/*const unsigned int SCR_WIDTH = 1280;
-	const unsigned int SCR_HRIGHT = 720;
-	float factor = 0.2f;
-	float fov = 45.0f;
-
-	//摄像机
-	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-	float lastX = SCR_WIDTH / 2;
-	float lastY = SCR_HRIGHT / 2;
-	bool firstMouse = true;
-
-	//摄像机
-	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
-
-	//光照
-	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-
-	float vertices[] = {
-	-0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, 0.5f, -0.5f,
-	0.5f, 0.5f, -0.5f,
-	-0.5f, 0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-
-	-0.5f, -0.5f, 0.5f,
-	0.5f, -0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, 0.5f,
-	-0.5f, -0.5f, 0.5f,
-
-	-0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, 0.5f,
-	-0.5f, 0.5f, 0.5f,
-
-	0.5f, 0.5f, 0.5f,
-	0.5f, 0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-
-	-0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, 0.5f,
-	0.5f, -0.5f, 0.5f,
-	-0.5f, -0.5f, 0.5f,
-	-0.5f, -0.5f, -0.5f,
-
-	-0.5f, 0.5f, -0.5f,
-	0.5f, 0.5f, -0.5f,
-	0.5f, 0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, -0.5f
-	};*/
 
 	//main开始
 	glfwInit();
@@ -165,8 +104,8 @@ simulateLight::simulateLight()
 	glEnable(GL_DEPTH_TEST);
 
 	//创建着色器
-	Shader lightingShader("Shader.vs", "Shader.fs");
-	Shader lampShader("Shader.vs", "LampShader.fs");
+	Shader lightingShader("simulateLight/Shader.vs", "simulateLight/Shader.fs");
+	Shader lampShader("simulateLight/Shader.vs", "simulateLight/LampShader.fs");
 	
 	//顶点属性环境
 	unsigned int VBO, VAO;
@@ -194,9 +133,44 @@ simulateLight::simulateLight()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		lightingShader.use();
-		lightingShader.
+		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+
+		//投影
+		glm::mat4 projection;
+		projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HRIGHT, 0.1f, 100.0f);
+		lightingShader.setMat4("projection", glm::value_ptr(projection));
+
+		//观察
+		glm::mat4 view;
+		view = camera.GetViewMartix();
+		lightingShader.setMat4("view", glm::value_ptr(view));
+
+		//model one
+		glm::mat4 model1;
+		lightingShader.setMat4("model1", glm::value_ptr(model1));
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//model two
+		lampShader.use();
+		lampShader.setMat4("projection", glm::value_ptr(projection));
+		lampShader.setMat4("view", glm::value_ptr(view));
+
+		glm::mat4 model2;
+		model2 = glm::translate(model2, lightPos);
+		model2 = glm::scale(model2, glm::vec3(0.2f));
+		lampShader.setMat4("model", glm::value_ptr(model2));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+
 	}
-	printf("dasda");
+	glBindVertexArray(0);
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glfwTerminate();
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {

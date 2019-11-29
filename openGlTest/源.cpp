@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "pictureTest.h"
 #include "Cube_3D.h"
+#include "simulateLight.h"
 using namespace std;
 
 
@@ -15,6 +16,7 @@ int main() {
 	//makeTriangle();//ÊµÑéÀý×Ó2
 	//makeSquare();
 	//pictureTest();
-	Cube_3D();
+	//Cube_3D();
+	simulateLight si;
 }
 

@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+/*#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -139,7 +139,7 @@ int Cube_3D() {
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
+	*/
 	//unsigned int EBO;
 	//glGenBuffers(1, &EBO);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -193,7 +193,7 @@ int Cube_3D() {
 	shader.setInt("texture1", 0);
 	shader.setInt("texture2", 1);
 	*/
-	unsigned int texture, texture1;
+	/*unsigned int texture, texture1;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	//纹理包装和过滤方式
@@ -336,3 +336,4 @@ void mouse_callback(GLFWwindow* window, double xPos, double yPos) {
 
 }
 
+*/
